@@ -1,0 +1,23 @@
+{
+  "name": "allex_destructionlowlevellib",
+  "version": "1.0.0",
+  "description": "JavaScript destruction helpers",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/allex-lowlevel-libs/destruction.git"
+  },
+  "keywords": [
+    "ecosystem:AllexJS",
+    "destruction"
+  ],
+  "author": "Andrija Petrovic <andrija.hers@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/allex-lowlevel-libs/destruction/issues"
+  },
+  "homepage": "https://github.com/allex-lowlevel-libs/destruction#readme"
+}
