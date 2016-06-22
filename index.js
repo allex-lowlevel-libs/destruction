@@ -33,7 +33,9 @@ function objDestroyAll (obj) {
 }
 
 function destructor(item){
-  item.destroy();
+  if (item.destroy) {
+    item.destroy();
+  }
 }
 
 function containerDestroyAll (container) {
