@@ -1,4 +1,4 @@
-function createLib(has,isFunction,isArray,isNumber,isString){
+function createLib(isFunction,isArray,isNumber,isString){
   'use strict';
 
   //helper function
@@ -6,11 +6,13 @@ function createLib(has,isFunction,isArray,isNumber,isString){
     if (!isString(methodName)){
       throw new Error(methodName + ' is not a string.');
     }
-    if (!has(el,methodName)){
-      throw new Error(el + ' is not an object or does not have method ' + methodName + '.');
+    if (el === null || typeof el !== 'object'){
+      //console.error(el);
+      throw new Error('First parameter is not an object.');
     }
     if (!isFunction(el[methodName])){
-      throw new Error('Property destroy of ' + el + ' is not a function.');
+      //console.error(el);
+      throw new Error('Passed object does not have method ' + methodName + ' or property ' + methodName + ' of passed object is not a function.');
     }
     return true;
   }
@@ -74,7 +76,7 @@ function createLib(has,isFunction,isArray,isNumber,isString){
   function objNullAll (obj) {
     if (!obj) return;
     if (obj === null || 'object' !== typeof obj){
-      throw new Error(obj + ' is not an object.');
+      throw new Error('First parameter is not an object.');
     }
     for (var i in obj) obj[i] = null;
     return true;
@@ -83,7 +85,7 @@ function createLib(has,isFunction,isArray,isNumber,isString){
   function objDestroyAll (obj) {
     if (!obj) return;
     if (obj === null || 'object' !== typeof obj){
-      throw new Error(obj + ' is not an object.');
+      throw new Error('First parameter is not an object.');
     }
     for (var i in obj) {
       if (canCallMethod(obj[i],'destroy')){

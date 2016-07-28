@@ -1,6 +1,6 @@
 var expect = require('chai').expect,
   checks = require('allex_checkslowlevellib'),
-  lib = require('..')(checks.has,checks.isFunction,checks.isArray,checks.isNumber,checks.isString);
+  lib = require('..')(checks.isFunction,checks.isArray,checks.isNumber,checks.isString);
 
 describe('Testing \'Destruction\' lib', function(){
   it('arryDestroyEl', function(){
@@ -20,7 +20,12 @@ describe('Testing \'Destruction\' lib', function(){
     expect(lib.arryDestroyEl.bind(lib,obj,index,arry)).to.throw(Error,/is not a non-negative number/);
     index = 0;  
     expect(lib.arryDestroyEl(obj,index,arry)).to.be.true;
+    var a = {destroy: function () {} };
+    var b = Object.create(a);
+    expect(lib.arryDestroyEl(b,index,arry)).to.be.true;
+
   });
+
   it('arryNullEl', function(){
     var arry = {};
     expect(lib.arryNullEl.bind(lib,null,null,arry)).to.throw(Error,/is not an array/);
@@ -32,6 +37,7 @@ describe('Testing \'Destruction\' lib', function(){
     index = 0;  
     expect(lib.arryNullEl(null,index,arry)).to.be.true;
   });
+
   it('arryDestroyAll', function(){
     var arry = null;
     expect(lib.arryDestroyAll(arry)).to.be.undefined;
@@ -42,6 +48,7 @@ describe('Testing \'Destruction\' lib', function(){
     arry = new Array(); 
     expect(lib.arryDestroyAll(arry)).to.be.true;
   });
+
   it('arryNullAll', function(){
     var arry = null;
     expect(lib.arryNullAll(arry)).to.be.undefined;
@@ -52,6 +59,7 @@ describe('Testing \'Destruction\' lib', function(){
     arry = new Array(); 
     expect(lib.arryNullAll(arry)).to.be.true;
   });
+
   it('objNullAll', function(){
     var obj = null;
     expect(lib.objNullAll(obj)).to.be.undefined;
@@ -64,20 +72,23 @@ describe('Testing \'Destruction\' lib', function(){
     obj = new Object(); 
     expect(lib.objNullAll(obj)).to.be.true;
   });
+
   it('objDestroyAll', function(){
     var obj = null;
     expect(lib.objDestroyAll(obj)).to.be.undefined;
     obj = -1;
     expect(lib.objDestroyAll.bind(lib,obj)).to.throw(Error,/is not an object/);
     obj = {a : "b"};
-    expect(lib.objDestroyAll.bind(lib,obj)).to.throw(Error,/does not have method destroy/);
+    expect(lib.objDestroyAll.bind(lib,obj)).to.throw(Error,/is not an object/);
     obj.a = {};
     expect(lib.objDestroyAll.bind(lib,obj)).to.throw(Error,/does not have method destroy/);
     obj.a.destroy = false;
     expect(lib.objDestroyAll.bind(lib,obj)).to.throw(Error,/is not a function/);
     obj.a.destroy = function(){};
+    obj.b = Object.create(obj.a);
     expect(lib.objDestroyAll(obj)).to.be.true;
   });
+
   it('containerDestroyAll', function(){
     var container = -1; 
     expect(lib.containerDestroyAll.bind(lib,container)).to.throw(Error,/is not an object/);
@@ -87,7 +98,10 @@ describe('Testing \'Destruction\' lib', function(){
     expect(lib.containerDestroyAll.bind(lib,container)).to.throw(Error,/not a function/);
     container.traverse = function(){};
     expect(lib.containerDestroyAll(container)).to.be.true;
+    container2 = Object.create(container);
+    expect(lib.containerDestroyAll(container2)).to.be.true;
   });
+
   it('containerDestroyDeep', function(){
     var container = -1; 
     expect(lib.containerDestroyDeep.bind(lib,container)).to.throw(Error,/is not an object/);
@@ -101,5 +115,7 @@ describe('Testing \'Destruction\' lib', function(){
     expect(lib.containerDestroyDeep.bind(lib,container)).to.throw(Error,/not a function/);
     container.destroy = function(){};
     expect(lib.containerDestroyDeep(container)).to.be.true;
+    container2 = Object.create(container);
+    expect(lib.containerDestroyDeep(container2)).to.be.true;
   });
 });
