@@ -74,20 +74,22 @@ function createLib(isFunction,isArray,isNumber,isString){
   }
 
   function objNullAll (obj) {
+    var i;
     if (!obj) return;
     if (obj === null || 'object' !== typeof obj){
       throw new Error('First parameter is not an object.');
     }
-    for (var i in obj) obj[i] = null;
+    for (i in obj) obj[i] = null;
     return true;
   }
 
   function objDestroyAll (obj) {
+    var i;
     if (!obj) return;
     if (obj === null || 'object' !== typeof obj){
       throw new Error('First parameter is not an object.');
     }
-    for (var i in obj) {
+    for (i in obj) {
       if (canCallMethod(obj[i],'destroy')){
         obj[i].destroy();
       }

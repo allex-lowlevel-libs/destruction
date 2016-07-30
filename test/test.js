@@ -4,33 +4,35 @@ var expect = require('chai').expect,
 
 describe('Testing \'Destruction\' lib', function(){
   it('arryDestroyEl', function(){
-    var obj = 2;
+    var obj,arry,index,a,b;
+    obj = 2;
     expect(lib.arryDestroyEl.bind(lib,obj,null,null)).to.throw(Error,/is not an object/);
     obj = new Object();
     expect(lib.arryDestroyEl.bind(lib,obj,null,null)).to.throw(Error,/does not have method destroy/);
     obj.destroy = true;
     expect(lib.arryDestroyEl.bind(lib,obj,null,null)).to.throw(Error,/is not a function/);
     obj.destroy = function(){};
-    var arry = {};
+    arry = {};
     expect(lib.arryDestroyEl.bind(lib,obj,null,arry)).to.throw(Error,/is not an array/);
     arry = [3];
-    var index = {};  
+    index = {};  
     expect(lib.arryDestroyEl.bind(lib,obj,index,arry)).to.throw(Error,/is not a non-negative number/);
     index = -1;  
     expect(lib.arryDestroyEl.bind(lib,obj,index,arry)).to.throw(Error,/is not a non-negative number/);
     index = 0;  
     expect(lib.arryDestroyEl(obj,index,arry)).to.be.true;
-    var a = {destroy: function () {} };
-    var b = Object.create(a);
+    a = {destroy: function () {} };
+    b = Object.create(a);
     expect(lib.arryDestroyEl(b,index,arry)).to.be.true;
 
   });
 
   it('arryNullEl', function(){
-    var arry = {};
+    var arry,index;
+    arry = {};
     expect(lib.arryNullEl.bind(lib,null,null,arry)).to.throw(Error,/is not an array/);
     arry = [3];
-    var index = {};  
+    index = {};  
     expect(lib.arryNullEl.bind(lib,null,index,arry)).to.throw(Error,/is not a non-negative number/);
     index = -1;  
     expect(lib.arryNullEl.bind(lib,null,index,arry)).to.throw(Error,/is not a non-negative number/);
