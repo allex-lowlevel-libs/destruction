@@ -6,7 +6,7 @@ function createLib(isFunction,isArray,isNumber,isString){
     if (!isString(methodName)){
       throw new Error(methodName + ' is not a string.');
     }
-    if (el === null || typeof el !== 'object'){
+    if ((el === null || typeof el !== 'object') && !isFunction(el)){
       //console.error(el);
       throw new Error('First parameter is not an object.');
     }

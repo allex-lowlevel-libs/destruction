@@ -41,13 +41,17 @@ describe('Testing \'Destruction\' lib', function(){
   });
 
   it('arryDestroyAll', function(){
-    var arry = null;
+    var arry = null, f;
     expect(lib.arryDestroyAll(arry)).to.be.undefined;
     arry = -1;
     expect(lib.arryDestroyAll.bind(lib,arry)).to.throw(Error,/is not an array/);
     arry = [];
     expect(lib.arryDestroyAll(arry)).to.be.true;
     arry = new Array(); 
+    expect(lib.arryDestroyAll(arry)).to.be.true;
+    f = function () {};
+    f.destroy = function () {}
+    arry.push(f);
     expect(lib.arryDestroyAll(arry)).to.be.true;
   });
 
