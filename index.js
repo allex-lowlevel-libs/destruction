@@ -17,9 +17,9 @@ function createLib(isFunction,isArray,isNumber,isString){
     return true;
   }
 
-  function arryDestroyEl (el, index, arr) {
+  function arryDestroyEl (exception, el, index, arr) {
     if (canCallMethod(el,'destroy')){
-      el.destroy();
+      destroyer(el, exception);
     }
     if (!isArray(arr)){
       throw new Error(arr + ' is not an array.');
@@ -51,14 +51,15 @@ function createLib(isFunction,isArray,isNumber,isString){
     return true;
   }
 
-  function arryDestroyAll (arr) {
+  function arryDestroyAll (arr, exception) {
     if (!arr) return;
 
     if (!isArray(arr)){
       throw new Error(arr + ' is not an array.');
     }
 
-    arr.forEach(arryDestroyEl);
+    arr.forEach(arryDestroyEl.bind(null, exception));
+    exception = null;
     return true;
   }
 
@@ -83,7 +84,7 @@ function createLib(isFunction,isArray,isNumber,isString){
     return true;
   }
 
-  function objDestroyAll (obj) {
+  function objDestroyAll (obj, exception) {
     var i;
     if (!obj) return;
     if (obj === null || 'object' !== typeof obj){
@@ -91,32 +92,41 @@ function createLib(isFunction,isArray,isNumber,isString){
     }
     for (i in obj) {
       if (canCallMethod(obj[i],'destroy')){
-        obj[i].destroy();
+        destroyer(obj[i], exception);
       }
       obj[i] = null;
     }
     return true;
   }
 
-  function destructor(item){
+  function destructor(exception, item, itemname){
     if (canCallMethod(item,'destroy')){
-      item.destroy();
+      destroyer(item, exception);
     }
   }
 
-  function containerDestroyAll (container) {
+  function containerDestroyAll (container, exception) {
     if (canCallMethod(container,'traverse')){
-      container.traverse(destructor);
+      container.traverse(destructor.bind(null, exception));
     }
+    exception = null;
     return true;
   }
 
-  function containerDestroyDeep (container) {
+  function containerDestroyDeep (container, exception) {
     containerDestroyAll(container);
     if (canCallMethod(container,'destroy')){
-      container.destroy();
+      destroyer(container, exception);
     }
     return true;
+  }
+
+  function destroyer (el, exception) {    
+    if (typeof exception == 'undefined') {
+      el.destroy();
+      return;
+    }
+    el.destroy(exception);
   }
 
   return {
