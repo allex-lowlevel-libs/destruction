@@ -11,7 +11,7 @@ function createLib(isFunction,isArray,isNumber,isString){
       throw new Error('First parameter is not an object.');
     }
     if (!isFunction(el[methodName])){
-      //console.error(el);
+      console.error(el);
       throw new Error('Passed object does not have method ' + methodName + ' or property ' + methodName + ' of passed object is not a function.');
     }
     return true;
@@ -106,8 +106,8 @@ function createLib(isFunction,isArray,isNumber,isString){
   }
 
   function containerDestroyAll (container, exception) {
-    if (canCallMethod(container,'traverse')){
-      container.traverse(destructor.bind(null, exception));
+    if (canCallMethod(container,'traverseSafe')){
+      container.traverseSafe(destructor.bind(null, exception), 'Error in destruction');
     }
     exception = null;
     return true;
